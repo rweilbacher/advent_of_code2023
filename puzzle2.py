@@ -58,17 +58,17 @@ with open("puzzle2_input.txt") as file:
 content = content.split("\n")[:-1]
 games = parse_games(content)
 
-id_sum = 0
-target_red = 12
-target_green = 13
-target_blue = 14
+sum = 0
 for game in games:
-    valid_rounds = 0
+    highest_red = 0
+    highest_green = 0
+    highest_blue = 0
     for round in game.rounds:
-        if round.red <= target_red and round.green <= target_green and round.blue <= target_blue:
-            valid_rounds += 1
-        else:
-            pass
-    if valid_rounds == len(game.rounds):
-        id_sum += game.game_id
-print(id_sum)
+        if round.red > highest_red:
+            highest_red = round.red
+        if round.green > highest_green:
+            highest_green = round.green
+        if round.blue > highest_blue:
+            highest_blue = round.blue
+    sum += highest_red * highest_green * highest_blue
+print(sum)
