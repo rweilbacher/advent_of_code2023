@@ -23,6 +23,13 @@ class Symbol:
         return f"{self.value} at {self.x}, {self.y}"
 
 
+def is_adjacent(number, symbol):
+    if number.y - 1 <= symbol.y <= number.y + 1:
+        if number.x - 1 <= symbol.x <= number.x + number.width:
+            return True
+    return False
+
+
 with open("puzzle3_input.txt") as file:
     text = file.read()
 
@@ -52,12 +59,26 @@ while y < len(text):
     y += 1
 
 
+# Part 1
 sum = 0
 for number in numbers:
     sum = sum
     for symbol in symbols:
-        if number.y - 1 <= symbol.y <= number.y + 1:
-            if number.x - 1 <= symbol.x <= number.x + number.width:
+        if is_adjacent(number, symbol):
                 sum += number.value
                 break
-print(sum)
+print(f"Part 1: {sum}")
+
+
+# Part 2
+sum = 0
+for symbol in symbols:
+    if symbol.value != "*":
+        continue
+    adj_numbers = []
+    for number in numbers:
+        if is_adjacent(number, symbol):
+            adj_numbers.append(number)
+    if len(adj_numbers) == 2:
+        sum += adj_numbers[0].value * adj_numbers[1].value
+print(f"Part 2: {sum}")
